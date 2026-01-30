@@ -50,7 +50,7 @@ jobs:
         run: |
           echo "=== Starting Server ==="
           
-          java -Xmx12G -Xms10G \
+          java -Xmx18G -Xms10G \
             -XX:+UseG1GC \
             -XX:+ParallelRefProcEnabled \
             -XX:MaxGCPauseMillis=200 \
@@ -80,7 +80,7 @@ jobs:
           echo "🎮 SERVER ONLINE"
           echo ""
           
-          MAX_TIME=20700
+          MAX_TIME=300
           ELAPSED=0
           
           while [ $ELAPSED -lt $MAX_TIME ]; do
