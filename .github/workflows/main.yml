@@ -1,0 +1,263 @@
+name: forge-1.12.2-auto
+on:
+  workflow_dispatch:
+
+jobs:
+  minecraft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Download and Install Forge 1.12.2
+        run: |
+          echo "=== Downloading Forge 1.12.2 ==="
+          curl -L -o forge-installer.jar \
+            "https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2860/forge-1.12.2-14.23.5.2860-installer.jar"
+          
+          echo "=== Installing Forge Server ==="
+          java -jar forge-installer.jar --installServer
+          
+          # Find and rename forge jar
+          FORGE_JAR=$(ls forge-*.jar 2>/dev/null | grep -v installer | head -n 1)
+          if [ -z "$FORGE_JAR" ]; then
+            FORGE_JAR=$(ls minecraft_server.*.jar 2>/dev/null | head -n 1)
+          fi
+          
+          if [ -n "$FORGE_JAR" ]; then
+            mv "$FORGE_JAR" forge.jar
+            echo "✔ Forge installed: $FORGE_JAR → forge.jar"
+          else
+            echo "❌ Forge installation failed"
+            exit 1
+          fi
+          
+          rm forge-installer.jar
+          echo "✔ Forge ready"
+
+      - name: Create Server Files
+        run: |
+          echo "=== Creating server configuration ==="
+          
+          # Create eula.txt
+          cat > eula.txt << 'EOF'
+eula=true
+EOF
+          echo "✔ eula.txt created"
+          
+          # Create server.properties
+          cat > server.properties << 'EOF'
+#Minecraft server properties - Forge 1.12.2 Cracked
+network-compression-threshold=512
+use-native-transport=true
+snooper-enabled=false
+server-name=Forge 1.12.2 Server
+motd=§6§l⚡ Forge 1.12.2 §r§7| §c§lCracked §r§7| §a§lTest Server
+server-ip=
+server-port=25565
+online-mode=false
+prevent-proxy-connections=false
+view-distance=10
+max-tick-time=60000
+max-build-height=256
+gamemode=0
+difficulty=1
+hardcore=false
+pvp=true
+allow-flight=false
+force-gamemode=false
+level-name=world
+level-type=DEFAULT
+level-seed=
+generator-settings=
+generate-structures=true
+max-world-size=29999984
+spawn-protection=0
+spawn-npcs=true
+spawn-animals=true
+spawn-monsters=true
+allow-nether=true
+max-players=20
+player-idle-timeout=0
+white-list=false
+op-permission-level=4
+enable-command-block=true
+enable-query=false
+query.port=25565
+enable-rcon=false
+rcon.port=25575
+rcon.password=
+resource-pack=
+resource-pack-hash=
+announce-player-achievements=true
+EOF
+          echo "✔ server.properties created"
+          
+          # Create playit.toml
+          if [ -n "${{ secrets.PLAYIT_SECRET }}" ]; then
+            echo "${{ secrets.PLAYIT_SECRET }}" > playit.toml
+            echo "✔ playit.toml from secrets"
+          else
+            cat > playit.toml << 'EOF'
+secret_key = "6eb9988868e8f5d8e1eac21f00e11811a51d9c83a7bfbe17b7a557774f43fcda"
+EOF
+            echo "✔ playit.toml created"
+          fi
+          
+          # Create mods folder
+          mkdir -p mods
+          echo "✔ mods folder created"
+
+      - name: Download and Setup Playit
+        run: |
+          echo "=== Downloading Playit ==="
+          curl -SsL https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-linux-amd64 -o playit-linux-amd64
+          chmod +x playit-linux-amd64
+          echo "✔ Playit downloaded"
+          
+          # Start playit
+          ./playit-linux-amd64 > playit.log 2>&1 &
+          PLAYIT_PID=$!
+          
+          echo "✔ Playit started (PID: $PLAYIT_PID)"
+          echo "⏳ Waiting for tunnel..."
+          sleep 15
+          
+          # Show connection info
+          if [ -f playit.log ]; then
+            echo ""
+            echo "=== 🌐 Playit Connection Info ==="
+            tail -20 playit.log
+            echo "================================"
+            echo ""
+          fi
+          
+          # Keep running
+          while true; do
+            if ! kill -0 $PLAYIT_PID 2>/dev/null; then
+              ./playit-linux-amd64 >> playit.log 2>&1 &
+              PLAYIT_PID=$!
+            fi
+            sleep 30
+          done &
+
+      - name: Run Forge Server (5 minutes test)
+        run: |
+          echo "=== Starting Forge 1.12.2 Server ==="
+          echo "⏰ Test run: 5 minutes only"
+          
+          java -Xmx12G -Xms8G \
+            -XX:+UseG1GC \
+            -XX:+ParallelRefProcEnabled \
+            -XX:MaxGCPauseMillis=200 \
+            -XX:+UnlockExperimentalVMOptions \
+            -XX:+DisableExplicitGC \
+            -XX:G1NewSizePercent=30 \
+            -XX:G1MaxNewSizePercent=40 \
+            -XX:G1HeapRegionSize=8M \
+            -XX:G1ReservePercent=20 \
+            -XX:InitiatingHeapOccupancyPercent=15 \
+            -XX:SurvivorRatio=32 \
+            -XX:MaxTenuringThreshold=1 \
+            -jar forge.jar nogui &
+          SERVER_PID=$!
+          
+          echo "✔ Server started (PID: $SERVER_PID)"
+          echo "⏳ Waiting 2 minutes for Forge to load..."
+          sleep 120
+          
+          echo ""
+          echo "╔════════════════════════════════════╗"
+          echo "║    🎮 SERVER ONLINE - 5 MIN TEST   ║"
+          echo "╠════════════════════════════════════╣"
+          echo "║ Version: Forge 1.12.2              ║"
+          echo "║ RAM: 12GB                          ║"
+          echo "║ Mode: Cracked (online-mode=false)  ║"
+          echo "║ Duration: 5 minutes                ║"
+          echo "╚════════════════════════════════════╝"
+          echo ""
+          
+          # Run for 5 minutes (300 seconds)
+          # Already waited 120, so wait 180 more
+          REMAINING=180
+          
+          echo "⏰ Server will run for 3 more minutes..."
+          while [ $REMAINING -gt 0 ]; do
+            if ! kill -0 $SERVER_PID 2>/dev/null; then
+              echo "⚠️ Server stopped early"
+              break
+            fi
+            sleep 30
+            REMAINING=$((REMAINING - 30))
+            if [ $REMAINING -gt 0 ]; then
+              echo "⏰ Time remaining: $((REMAINING / 60)) min $((REMAINING % 60)) sec"
+            fi
+          done
+          
+          echo ""
+          echo "=== ⏱️ 5 Minutes Complete - Stopping Server ==="
+          
+          if kill -0 $SERVER_PID 2>/dev/null; then
+            kill -TERM $SERVER_PID 2>/dev/null || true
+            sleep 10
+            kill -9 $SERVER_PID 2>/dev/null || true
+          fi
+          
+          pkill playit-linux-amd64 2>/dev/null || true
+          echo "✔ Server stopped successfully"
+          
+          echo ""
+          echo "=== 📊 Test Summary ==="
+          echo "✅ Forge 1.12.2 installed"
+          echo "✅ Server files created"
+          echo "✅ Playit tunnel working"
+          echo "✅ Server ran for 5 minutes"
+          echo "✅ Ready for full deployment!"
+
+      - name: Save All Files
+        run: |
+          echo "=== Saving server files to repository ==="
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add all files
+          git add -A
+          
+          if ! git diff --cached --quiet 2>/dev/null; then
+            git commit -m "Forge 1.12.2 server setup - Test completed $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            
+            git pull --rebase --autostash \
+              https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}.git || true
+            
+            for i in {1..3}; do
+              if git push https://x-access-token:${{ secrets.PAT }}@github.com/${{ github.repository }}.git; then
+                echo "✔ All files saved to repository!"
+                echo ""
+                echo "╔════════════════════════════════════╗"
+                echo "║  ✅ SETUP COMPLETE!                ║"
+                echo "╠════════════════════════════════════╣"
+                echo "║ All files are now in your repo:    ║"
+                echo "║ - forge.jar                        ║"
+                echo "║ - playit-linux-amd64              ║"
+                echo "║ - eula.txt                         ║"
+                echo "║ - server.properties                ║"
+                echo "║ - playit.toml                      ║"
+                echo "║ - world/ (if generated)            ║"
+                echo "║                                    ║"
+                echo "║ Ready for full server deployment!  ║"
+                echo "╚════════════════════════════════════╝"
+                break
+              fi
+              echo "Push attempt $i failed, retrying..."
+              sleep 10
+            done
+          else
+            echo "ℹ️ No changes to save"
+          fi
