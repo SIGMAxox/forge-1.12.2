@@ -1,0 +1,44 @@
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2325) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2339) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2350) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2361) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2394) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2463) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2475) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
+
+thread 'tokio-runtime-worker' (2488) panicked at /project/packages/agent_core/src/playit_agent.rs:169:27:
+called `Result::unwrap()` on an `Err` value: JoinError::Cancelled(Id(25))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+Error: RenderError(Os { code: 6, kind: Uncategorized, message: "No such device or address" })
