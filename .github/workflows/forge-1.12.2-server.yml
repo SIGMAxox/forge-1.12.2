@@ -80,7 +80,7 @@ jobs:
           echo "🎮 SERVER ONLINE"
           echo ""
           
-          MAX_TIME=300
+          MAX_TIME=20700
           ELAPSED=0
           
           while [ $ELAPSED -lt $MAX_TIME ]; do
