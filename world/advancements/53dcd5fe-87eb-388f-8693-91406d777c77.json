@@ -275,6 +275,12 @@
     },
     "done": true
   },
+  "minecraft:story/shiny_gear": {
+    "criteria": {
+      "diamond_boots": "2026-01-31 18:29:19 +0000"
+    },
+    "done": true
+  },
   "minecraft:recipes/decorations/magenta_stained_glass_pane": {
     "criteria": {
       "has_the_recipe": "2026-01-31 12:21:51 +0000"
@@ -963,10 +969,13 @@
   },
   "minecraft:adventure/kill_all_mobs": {
     "criteria": {
+      "stray": "2026-01-31 18:19:25 +0000",
+      "wither_skeleton": "2026-01-31 18:16:33 +0000",
       "zombie_villager": "2026-01-31 17:59:22 +0000",
       "skeleton": "2026-01-31 12:33:51 +0000",
       "husk": "2026-01-31 13:57:18 +0000",
       "zombie": "2026-01-31 12:57:46 +0000",
+      "witch": "2026-01-31 19:31:32 +0000",
       "spider": "2026-01-31 12:34:04 +0000"
     },
     "done": false
@@ -1926,6 +1935,12 @@
     },
     "done": true
   },
+  "minecraft:husbandry/plant_seed": {
+    "criteria": {
+      "wheat": "2026-01-31 19:30:33 +0000"
+    },
+    "done": true
+  },
   "minecraft:recipes/transportation/boat": {
     "criteria": {
       "has_the_recipe": "2026-01-31 12:21:51 +0000"
@@ -2618,10 +2633,13 @@
   },
   "minecraft:husbandry/balanced_diet": {
     "criteria": {
+      "cooked_beef": "2026-01-31 18:40:26 +0000",
       "baked_potato": "2026-01-31 13:31:04 +0000",
       "apple": "2026-01-31 12:47:42 +0000",
+      "cooked_cod": "2026-01-31 18:29:26 +0000",
       "mutton": "2026-01-31 12:31:16 +0000",
       "bread": "2026-01-31 12:40:59 +0000",
+      "rotten_flesh": "2026-01-31 18:36:10 +0000",
       "carrot": "2026-01-31 13:06:37 +0000"
     },
     "done": false
@@ -3803,6 +3821,12 @@
     },
     "done": true
   },
+  "mcwpaths:recipes/diorite": {
+    "criteria": {
+      "has_planks": "2026-01-31 19:03:43 +0000"
+    },
+    "done": true
+  },
   "mcwtrpdoors:recipes/birch/birch_four_panel_trapdoor": {
     "criteria": {
       "has_the_recipe": "2026-01-31 12:21:51 +0000"
@@ -3812,6 +3836,12 @@
   "mcwtrpdoors:recipes/oak/oak_glass_trapdoor": {
     "criteria": {
       "has_the_recipe": "2026-01-31 12:21:51 +0000"
+    },
+    "done": true
+  },
+  "mcwpaths:recipes/sandstone": {
+    "criteria": {
+      "has_planks": "2026-01-31 18:42:31 +0000"
     },
     "done": true
   },
@@ -4004,6 +4034,12 @@
   "minecraft:recipes/transportation/jungle_boat": {
     "criteria": {
       "has_the_recipe": "2026-01-31 12:21:51 +0000"
+    },
+    "done": true
+  },
+  "minecraft:adventure/shoot_arrow": {
+    "criteria": {
+      "shot_arrow": "2026-01-31 18:40:43 +0000"
     },
     "done": true
   },
